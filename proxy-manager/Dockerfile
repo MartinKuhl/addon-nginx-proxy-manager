@@ -58,6 +58,7 @@ RUN \
     # Build Frontend
     && cd /app/frontend \
     && yarn install --ignore-engines --network-timeout 100000 \
+    && yarn locale-compile \
     && yarn build --ignore-engines \
     && rm -rf node_modules \
     \
