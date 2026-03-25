@@ -32,7 +32,7 @@ RUN \
     nginx-mod-stream=1.28.2-r1 \
     nginx=1.28.2-r1 \
     nodejs=22.16.0-r2 \
-    npm=11.3.0-r1 \
+    npm=11.6.4-r0 \
     openssl=3.5.5-r0 \
     py3-pip=25.1.1-r1 \
     python3=3.12.12-r0 \
