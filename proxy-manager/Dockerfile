@@ -41,7 +41,7 @@ RUN \
     && tar zxvf /tmp/nginxproxymanager.tar.gz --strip 1 -C /app \
     \
     # --------------------------------------------------------
-    # DYNAMIC PATCHING (Replaces the old patches/ folder)
+    # DYNAMIC PATCHING
     # --------------------------------------------------------
     # 1. Redirect paths from /data/ to /config/
     && find /app/backend /app/docker/rootfs -type f -exec sed -i 's#/data/#/config/#g' {} + \
@@ -53,15 +53,12 @@ RUN \
     && sed -i 's#  && deactivate##g' /app/backend/lib/certbot.js \
     # 4. Fix Cloudflare dependency conflict
     && sed -i 's/cloudflare==4.0.\*/cloudflare/g' /app/backend/certbot/dns-plugins.json \
-    # 5. Replace node-sass with dart sass
-    && sed -i 's/"node-sass": "^9.0.0"/"sass": "^1.85.0"/' /app/frontend/package.json \
-    && sed -i "s/'sass-loader'/{ loader: 'sass-loader', options: { implementation: require('sass') } }/" /app/frontend/webpack.config.js \
     # --------------------------------------------------------
     \
     # Build Frontend
     && cd /app/frontend \
     && yarn install --ignore-engines --network-timeout 100000 \
-    && NODE_OPTIONS="--openssl-legacy-provider" yarn build --ignore-engines \
+    && yarn build --ignore-engines \
     && rm -rf node_modules \
     \
     && mkdir -p /opt/nginx-proxy-manager/frontend \
