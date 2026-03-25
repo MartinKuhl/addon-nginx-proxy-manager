@@ -1,0 +1,15 @@
+--- a/frontend/package.json
++++ b/frontend/package.json
+@@ -29,1 +29,1 @@
+-    "node-sass": "^9.0.0",
++    "sass": "^1.85.0",
+--- a/frontend/webpack.config.js
++++ b/frontend/webpack.config.js
+@@ -78,1 +78,6 @@
+-					'sass-loader'
++					{
++						loader: 'sass-loader',
++						options: {
++							implementation: require('sass')
++						}
++					}

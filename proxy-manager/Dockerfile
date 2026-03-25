@@ -63,6 +63,8 @@ RUN \
     && rm -rf node_modules \
     && cp -r /app/backend/. /opt/nginx-proxy-manager/ \
     \
+    && cp -R /app/global/. /opt/nginx-proxy-manager/global/ \
+    \
     && cd /opt/nginx-proxy-manager \
     && yarn install \
     && rm -rf /etc/services.d/frontend \
