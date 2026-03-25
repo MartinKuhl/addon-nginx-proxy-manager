@@ -14,7 +14,7 @@ COPY patches/*.patch /usr/src/
 # Setup base
 # docker run --rm alpine:3.23.3 sh -c "apk update -q && apk list %dependency% e.g. libpq"
 ARG NGINX_PROXY_MANAGER_VERSION="v2.14.0"
-# hadolint ignore=DL3003,DL3042
+
 RUN \
     apk add --no-cache --virtual .build-dependencies \
     build-base \
