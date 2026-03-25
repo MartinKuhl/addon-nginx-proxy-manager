@@ -31,7 +31,7 @@ RUN \
     logrotate=3.22.0-r0 \
     nginx-mod-stream=1.28.2-r1 \
     nginx=1.28.2-r1 \
-    nodejs=22.16.0-r2 \
+    nodejs=22.22.0-r0 \
     npm=11.3.0-r1 \
     openssl=3.5.5-r0 \
     py3-pip=25.1.1-r1 \
