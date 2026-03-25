@@ -1,7 +1,0 @@
---- a/backend/templates/proxy_host.conf
-+++ b/backend/templates/proxy_host.conf
-@@ -22,2 +22,2 @@
--  access_log /config/logs/proxy-host-{{ id }}_access.log proxy;
--  error_log /config/logs/proxy-host-{{ id }}_error.log warn;
-+  access_log /proc/1/fd/1 proxy;
-+  error_log /proc/1/fd/1 warn;

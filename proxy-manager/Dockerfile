@@ -8,7 +8,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # Copy patches into the image
 COPY patches/*.patch /usr/src/
 
-# define NPM version 
+# define NPM version
 ARG NGINX_PROXY_MANAGER_VERSION="v2.14.0"
 
 # Build dependencies and runtime packages install
@@ -43,8 +43,23 @@ RUN \
     && mkdir /app \
     && tar zxvf /tmp/nginxproxymanager.tar.gz --strip 1 -C /app \
     \
-    # apply patches
-    && for i in /usr/src/*.patch; do patch -d /app -p 1 < "${i}"; done \
+    # --------------------------------------------------------
+    # DYNAMISCHES PATCHEN (Ersetzt den alten patches/ Ordner)
+    # --------------------------------------------------------
+    # 1. Pfade von /data/ auf /config/ umbiegen
+    && find /app/backend /app/global /app/docker/rootfs -type f -exec sed -i 's#/data/#/config/#g' {} + \
+    # 2. Logs auf Docker-Stdout (/proc/1/fd/1) umleiten
+    && find /app/backend/templates /app/docker/rootfs -type f -name "*.conf" -exec sed -i -E 's#access_log /config/logs/[^ ]+ #access_log /proc/1/fd/1 #g' {} + \
+    && find /app/backend/templates /app/docker/rootfs -type f -name "*.conf" -exec sed -i -E 's#error_log /config/logs/[^ ]+ #error_log /proc/1/fd/1 #g' {} + \
+    # 3. Certbot Plugin Installation fixen
+    && sed -i 's#\. /opt/certbot/bin/activate && pip install --no-cache-dir#pip install#g' /app/backend/lib/certbot.js \
+    && sed -i 's#  && deactivate##g' /app/backend/lib/certbot.js \
+    # 4. Cloudflare Dependency Conflict beheben
+    && sed -i 's/cloudflare==4.0.\*/cloudflare/g' /app/global/certbot-dns-plugins.json \
+    # 5. Node-Sass durch aktuelles Sass ersetzen
+    && sed -i 's/"node-sass": "^9.0.0"/"sass": "^1.85.0"/' /app/frontend/package.json \
+    && sed -i "s/'sass-loader'/{ loader: 'sass-loader', options: { implementation: require('sass') } }/" /app/frontend/webpack.config.js \
+    # --------------------------------------------------------
     \
     # Frontend Build (with safe scope for NODE_OPTIONS)
     && cd /app/frontend \
