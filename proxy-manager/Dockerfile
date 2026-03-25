@@ -5,9 +5,6 @@ FROM ${BUILD_FROM}
 # Set shell for clean pipe error handling
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-# Copy patches into the image
-COPY patches/*.patch /usr/src/
-
 # define NPM version
 ARG NGINX_PROXY_MANAGER_VERSION="v2.14.0"
 
