@@ -59,7 +59,7 @@ RUN \
     && cd /app/frontend \
     && yarn install --ignore-engines --network-timeout 100000 \
     && yarn locale-compile \
-    && yarn build --ignore-engines \
+    && yarn build \
     && rm -rf node_modules \
     \
     && mkdir -p /opt/nginx-proxy-manager/frontend \
