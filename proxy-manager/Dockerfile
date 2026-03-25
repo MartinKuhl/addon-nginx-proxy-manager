@@ -14,29 +14,29 @@ COPY patches/*.patch /usr/src/
 # Setup base
 # docker run --rm alpine:3.23.3 sh -c "apk update -q && apk list %dependency% e.g. libpq"
 ARG NGINX_PROXY_MANAGER_VERSION="v2.14.0"
-
+# hadolint ignore=DL3003,DL3042
 RUN \
     apk add --no-cache --virtual .build-dependencies \
-    build-base \
-    git \
-    libffi-dev \
-    openssl-dev \
-    patch \
-    python3-dev \
+    build-base=0.5-r3 \
+    git=2.52.0-r0 \
+    libffi-dev=3.5.2-r0 \
+    openssl-dev=3.5.5-r0 \
+    patch=2.8-r0 \
+    python3-dev=3.12.12-r0 \
     \
     && apk add --no-cache \
-    apache2-utils \
-    certbot \
-    libcap \
-    logrotate \
-    nginx-mod-stream \
-    nginx \
-    nodejs \
-    npm \
-    openssl \
-    py3-pip \
-    python3 \
-    yarn \
+    apache2-utils=2.4.66-r0 \
+    certbot=4.0.0-r0 \
+    libcap=2.77-r0 \
+    logrotate=3.22.0-r0 \
+    nginx-mod-stream=1.28.2-r1 \
+    nginx=1.28.2-r1 \
+    nodejs=22.16.0-r2 \
+    npm=11.3.0-r1 \
+    openssl=3.5.5-r0 \
+    py3-pip=25.1.1-r1 \
+    python3=3.12.12-r0 \
+    yarn=1.22.22-r1 \
     \
     && yarn global add modclean \
     \
