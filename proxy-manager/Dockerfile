@@ -26,13 +26,13 @@ RUN \
     \
     && apk add --no-cache \
     apache2-utils=2.4.66-r0 \
-    certbot=4.0.0-r0 \
+    certbot=5.1.0-r0 \
     libcap=2.77-r0 \
     logrotate=3.22.0-r0 \
     nginx-mod-stream=1.28.2-r1 \
     nginx=1.28.2-r1 \
-    nodejs=22.16.0-r2 \
-    npm=11.3.0-r1 \
+    nodejs=24.16.1-r0 \
+    npm=11.11.0-r0 \
     openssl=3.5.5-r0 \
     py3-pip=25.1.1-r1 \
     python3=3.12.12-r0 \
