@@ -2,18 +2,17 @@ ARG BUILD_FROM=ghcr.io/hassio-addons/base:20.0.1
 # hadolint ignore=DL3006
 FROM ${BUILD_FROM}
 
-# Required for webpack config of NPM with Node.js 22
-ENV NODE_OPTIONS="--openssl-legacy-provider"
-
-# Set shell
+# Set shell for clean pipe error handling
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-# Copy patches
+# Copy patches into the image
 COPY patches/*.patch /usr/src/
 
-# Setup base
-# docker run --rm alpine:3.23.3 sh -c "apk update -q && apk list %dependency% e.g. libpq"
+# define NPM version 
 ARG NGINX_PROXY_MANAGER_VERSION="v2.14.0"
+
+# Build dependencies and runtime packages install
+# docker run --rm alpine:3.23.3 sh -c "apk update -q && apk list %dependency% e.g. libpq"
 # hadolint ignore=DL3003,DL3042
 RUN \
     apk add --no-cache --virtual .build-dependencies \
@@ -38,38 +37,30 @@ RUN \
     python3=3.12.12-r0 \
     yarn=1.22.22-r1 \
     \
-    && yarn global add modclean \
-    \
+    # NPM Source download and extract
     && curl -J -L -o /tmp/nginxproxymanager.tar.gz \
     "https://github.com/NginxProxyManager/nginx-proxy-manager/archive/${NGINX_PROXY_MANAGER_VERSION}.tar.gz" \
     && mkdir /app \
-    && tar zxvf \
-    /tmp/nginxproxymanager.tar.gz \
-    --strip 1 -C /app \
+    && tar zxvf /tmp/nginxproxymanager.tar.gz --strip 1 -C /app \
     \
-    && for i in /usr/src/*.patch; do \
-    patch -d /app -p 1 < "${i}"; done \
+    # apply patches
+    && for i in /usr/src/*.patch; do patch -d /app -p 1 < "${i}"; done \
     \
+    # Frontend Build (with safe scope for NODE_OPTIONS)
     && cd /app/frontend \
     && yarn install --ignore-engines --network-timeout 100000 \
-    && yarn build --ignore-engines \
+    && NODE_OPTIONS="--openssl-legacy-provider" yarn build --ignore-engines \
     && rm -rf node_modules \
     \
     && mkdir -p /opt/nginx-proxy-manager/frontend \
     && cp -r /app/frontend/dist/. /opt/nginx-proxy-manager/frontend/ \
     \
+    # Backend Build (only Production-Dependencies)
     && cd /app/backend \
-    && yarn install \
-    && rm -rf node_modules \
+    && yarn install --production \
     && cp -r /app/backend/. /opt/nginx-proxy-manager/ \
     \
-    && cp -R /app/global/. /opt/nginx-proxy-manager/global/ \
-    \
-    && cd /opt/nginx-proxy-manager \
-    && yarn install \
-    && rm -rf /etc/services.d/frontend \
-    && rm -rf /opt/nginx-proxy-manager/config \
-    \
+    # setup Nginx and configs 
     && rm -f -r /etc/nginx \
     && cp -r /app/docker/rootfs/etc/nginx /etc/nginx \
     && rm -f /etc/nginx/conf.d/dev.conf \
@@ -77,31 +68,20 @@ RUN \
     && cp /app/docker/rootfs/etc/letsencrypt.ini /etc \
     && cp /app/docker/rootfs/etc/logrotate.d/nginx-proxy-manager /etc/logrotate.d \
     \
+    # runtime configurations patches
     && sed -i "s#user npm;#user root;#" /etc/nginx/nginx.conf \
-    && sed -i "s#root /app/frontend;#root /opt/nginx-proxy-manager/frontend;#" \
-    /etc/nginx/conf.d/production.conf \
-    && sed -i "s#table.string('id').notNull().primary();#table.string('id', 32).notNull().primary();#" \
-    /opt/nginx-proxy-manager/migrations/20190227065017_settings.js \
+    && sed -i "s#root /app/frontend;#root /opt/nginx-proxy-manager/frontend;#" /etc/nginx/conf.d/production.conf \
+    && sed -i "s#table.string('id').notNull().primary();#table.string('id', 32).notNull().primary();#" /opt/nginx-proxy-manager/migrations/20190227065017_settings.js \
     \
-    && mkdir -p \
-    /run/nginx \
+    && mkdir -p /run/nginx \
     \
-    && modclean \
-    --path /opt/nginx-proxy-manager \
-    --no-progress \
-    --keep-empty \
-    --run \
-    \
-    && yarn global remove modclean \
-    && yarn cache clean \
-    \
+    # clean up system
     && apk del --purge .build-dependencies \
-    \
+    && yarn cache clean \
     && rm -f -r \
     /app \
     /etc/init.d/nginx \
     /etc/logrotate.d/nginx \
-    /opt/nginx-proxy-manager/node_modules/bcrypt/build \
     /root/.cache \
     /root/.node-gyp \
     /tmp/.[!.]* \
@@ -125,7 +105,7 @@ ARG BUILD_REF
 ARG BUILD_REPOSITORY
 ARG BUILD_VERSION
 
-# Labels
+# Labels for Home Assistant
 LABEL \
     io.hass.name="${BUILD_NAME}" \
     io.hass.description="${BUILD_DESCRIPTION}" \
