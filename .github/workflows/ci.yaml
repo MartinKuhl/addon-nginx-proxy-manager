@@ -13,4 +13,4 @@ on:
 
 jobs:
   workflows:
-    uses: hassio-addons/workflows/.github/workflows/addon-ci.yaml@main
+    uses: MartinKuhl/ha-workflows/.github/workflows/addon-ci.yaml@main

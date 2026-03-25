@@ -1,25 +1,15 @@
-# Home Assistant Community Add-on: Nginx Proxy Manager
+# Home Assistant Community Add-on: Nginx Proxy Manager (Forked)
 
 [![GitHub Release][releases-shield]][releases]
 ![Project Stage][project-stage-shield]
 [![License][license-shield]](LICENSE.md)
 
-![Supports armhf Architecture][armhf-shield]
-![Supports armv7 Architecture][armv7-shield]
 ![Supports aarch64 Architecture][aarch64-shield]
 ![Supports amd64 Architecture][amd64-shield]
-![Supports i386 Architecture][i386-shield]
 
 [![Github Actions][github-actions-shield]][github-actions]
 ![Project Maintenance][maintenance-shield]
 [![GitHub Activity][commits-shield]][commits]
-
-[![Discord][discord-shield]][discord]
-[![Community Forum][forum-shield]][forum]
-
-[![Sponsor Frenck via GitHub Sponsors][github-sponsors-shield]][github-sponsors]
-
-[![Support Frenck on Patreon][patreon-shield]][patreon]
 
 Manage Nginx proxy hosts with a simple, powerful interface.
 
@@ -43,50 +33,15 @@ Nginx proxy manager by providing additional Nginx directives.
 
 [:books: Read the full add-on documentation][docs]
 
-## Support
-
-Got questions?
-
-You have several options to get them answered:
-
-- The [Home Assistant Community Add-ons Discord chat server][discord] for add-on
-  support and feature requests.
-- The [Home Assistant Discord chat server][discord-ha] for general Home
-  Assistant discussions and questions.
-- The Home Assistant [Community Forum][forum].
-- Join the [Reddit subreddit][reddit] in [/r/homeassistant][reddit]
-
-You could also [open an issue here][issue] GitHub.
-
-## Contributing
-
-This is an active open-source project. We are always open to people who want to
-use the code or contribute to it.
-
-We have set up a separate document containing our
-[contribution guidelines](CONTRIBUTING.md).
-
-Thank you for being involved! :heart_eyes:
-
 ## Authors & contributors
 
 The original setup of this repository is by [Franck Nijhof][frenck].
-
-For a full list of all authors and contributors,
-check [the contributor's page][contributors].
-
-## We have got some Home Assistant add-ons for you
-
-Want some more functionality to your Home Assistant instance?
-
-We have created multiple add-ons for Home Assistant. For a full list, check out
-our [GitHub Repository][repository].
 
 ## License
 
 MIT License
 
-Copyright (c) 2019-2025 Franck Nijhof
+Copyright (c) 2019-2026
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -108,30 +63,16 @@ SOFTWARE.
 
 [aarch64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
-[armhf-shield]: https://img.shields.io/badge/armhf-no-red.svg
-[armv7-shield]: https://img.shields.io/badge/armv7-yes-green.svg
-[commits-shield]: https://img.shields.io/github/commit-activity/y/hassio-addons/addon-nginx-proxy-manager.svg
-[commits]: https://github.com/hassio-addons/addon-nginx-proxy-manager/commits/main
-[contributors]: https://github.com/hassio-addons/addon-nginx-proxy-manager/graphs/contributors
-[discord-ha]: https://discord.gg/c5DvZ4e
-[discord-shield]: https://img.shields.io/discord/478094546522079232.svg
-[discord]: https://discord.me/hassioaddons
-[docs]: https://github.com/hassio-addons/addon-nginx-proxy-manager/blob/main/proxy-manager/DOCS.md
-[forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg
-[forum]: https://community.home-assistant.io/t/home-assistant-community-add-on-nginx-proxy-manager/111830?u=frenck
-[frenck]: https://github.com/frenck
-[github-actions-shield]: https://github.com/hassio-addons/addon-nginx-proxy-manager/workflows/CI/badge.svg
-[github-actions]: https://github.com/hassio-addons/addon-nginx-proxy-manager/actions
-[github-sponsors-shield]: https://frenck.dev/wp-content/uploads/2019/12/github_sponsor.png
-[github-sponsors]: https://github.com/sponsors/frenck
-[i386-shield]: https://img.shields.io/badge/i386-no-red.svg
-[issue]: https://github.com/hassio-addons/addon-nginx-proxy-manager/issues
-[license-shield]: https://img.shields.io/github/license/hassio-addons/addon-nginx-proxy-manager.svg
-[maintenance-shield]: https://img.shields.io/maintenance/yes/2025.svg
-[patreon-shield]: https://frenck.dev/wp-content/uploads/2019/12/patreon.png
-[patreon]: https://www.patreon.com/frenck
+[commits-shield]: https://img.shields.io/github/commit-activity/y/MartinKuhl/addon-nginx-proxy-manager.svg
+[commits]: https://github.com/MartinKuhl/addon-nginx-proxy-manager/commits/main
+[docs]: https://github.com/MartinKuhl/addon-nginx-proxy-manager/blob/main/proxy-manager/DOCS.md
+[github-actions-shield]: https://github.com/MartinKuhl/addon-nginx-proxy-manager/workflows/CI/badge.svg
+[github-actions]: https://github.com/MartinKuhl/addon-nginx-proxy-manager/actions
+[issue]: https://github.com/MartinKuhl/addon-nginx-proxy-manager/issues
+[license-shield]: https://img.shields.io/github/license/MartinKuhl/addon-nginx-proxy-manager.svg
+[maintenance-shield]: https://img.shields.io/maintenance/yes/2026.svg
 [project-stage-shield]: https://img.shields.io/badge/project%20stage-experimental-yellow.svg
-[reddit]: https://reddit.com/r/homeassistant
-[releases-shield]: https://img.shields.io/github/release/hassio-addons/addon-nginx-proxy-manager.svg
-[releases]: https://github.com/hassio-addons/addon-nginx-proxy-manager/releases
-[repository]: https://github.com/hassio-addons/repository
+[releases-shield]: https://img.shields.io/github/release/MartinKuhl/addon-nginx-proxy-manager.svg
+[releases]: https://github.com/MartinKuhl/addon-nginx-proxy-manager/releases
+[repository]: https://github.com/MartinKuhl/ha-repository
+[frenck]: https://github.com/frenck
