@@ -2,13 +2,13 @@ ARG BUILD_FROM=ghcr.io/hassio-addons/base:20.0.1
 # hadolint ignore=DL3006
 FROM ${BUILD_FROM}
 
-# Set shell for clean pipe error handling
+# Set shell for proper pipe error handling
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-# define NPM version
+# Define NPM Version
 ARG NGINX_PROXY_MANAGER_VERSION="v2.14.0"
 
-# Build dependencies and runtime packages install
+# Install build dependencies and runtime packages
 # docker run --rm alpine:3.23.3 sh -c "apk update -q && apk list %dependency% e.g. libpq"
 # hadolint ignore=DL3003,DL3042
 RUN \
@@ -34,31 +34,31 @@ RUN \
     python3=3.12.12-r0 \
     yarn=1.22.22-r1 \
     \
-    # NPM Source download and extract
+    # Download and extract NPM source
     && curl -J -L -o /tmp/nginxproxymanager.tar.gz \
     "https://github.com/NginxProxyManager/nginx-proxy-manager/archive/${NGINX_PROXY_MANAGER_VERSION}.tar.gz" \
     && mkdir /app \
     && tar zxvf /tmp/nginxproxymanager.tar.gz --strip 1 -C /app \
     \
     # --------------------------------------------------------
-    # DYNAMISCHES PATCHEN (Ersetzt den alten patches/ Ordner)
+    # DYNAMIC PATCHING (Replaces the old patches/ folder)
     # --------------------------------------------------------
-    # 1. Pfade von /data/ auf /config/ umbiegen
-    && find /app/backend /app/global /app/docker/rootfs -type f -exec sed -i 's#/data/#/config/#g' {} + \
-    # 2. Logs auf Docker-Stdout (/proc/1/fd/1) umleiten
+    # 1. Redirect paths from /data/ to /config/
+    && find /app/backend /app/docker/rootfs -type f -exec sed -i 's#/data/#/config/#g' {} + \
+    # 2. Redirect access and error logs to Docker stdout (/proc/1/fd/1)
     && find /app/backend/templates /app/docker/rootfs -type f -name "*.conf" -exec sed -i -E 's#access_log /config/logs/[^ ]+ #access_log /proc/1/fd/1 #g' {} + \
     && find /app/backend/templates /app/docker/rootfs -type f -name "*.conf" -exec sed -i -E 's#error_log /config/logs/[^ ]+ #error_log /proc/1/fd/1 #g' {} + \
-    # 3. Certbot Plugin Installation fixen
+    # 3. Fix Certbot plugin installation commands
     && sed -i 's#\. /opt/certbot/bin/activate && pip install --no-cache-dir#pip install#g' /app/backend/lib/certbot.js \
     && sed -i 's#  && deactivate##g' /app/backend/lib/certbot.js \
-    # 4. Cloudflare Dependency Conflict beheben
-    && sed -i 's/cloudflare==4.0.\*/cloudflare/g' /app/global/certbot-dns-plugins.json \
-    # 5. Node-Sass durch aktuelles Sass ersetzen
+    # 4. Fix Cloudflare dependency conflict
+    && sed -i 's/cloudflare==4.0.\*/cloudflare/g' /app/backend/certbot/dns-plugins.json \
+    # 5. Replace node-sass with dart sass
     && sed -i 's/"node-sass": "^9.0.0"/"sass": "^1.85.0"/' /app/frontend/package.json \
     && sed -i "s/'sass-loader'/{ loader: 'sass-loader', options: { implementation: require('sass') } }/" /app/frontend/webpack.config.js \
     # --------------------------------------------------------
     \
-    # Frontend Build (with safe scope for NODE_OPTIONS)
+    # Build Frontend
     && cd /app/frontend \
     && yarn install --ignore-engines --network-timeout 100000 \
     && NODE_OPTIONS="--openssl-legacy-provider" yarn build --ignore-engines \
@@ -67,12 +67,12 @@ RUN \
     && mkdir -p /opt/nginx-proxy-manager/frontend \
     && cp -r /app/frontend/dist/. /opt/nginx-proxy-manager/frontend/ \
     \
-    # Backend Build (only Production-Dependencies)
+    # Build Backend (Production dependencies only)
     && cd /app/backend \
     && yarn install --production \
     && cp -r /app/backend/. /opt/nginx-proxy-manager/ \
     \
-    # setup Nginx and configs 
+    # Prepare Nginx configurations
     && rm -f -r /etc/nginx \
     && cp -r /app/docker/rootfs/etc/nginx /etc/nginx \
     && rm -f /etc/nginx/conf.d/dev.conf \
@@ -80,14 +80,14 @@ RUN \
     && cp /app/docker/rootfs/etc/letsencrypt.ini /etc \
     && cp /app/docker/rootfs/etc/logrotate.d/nginx-proxy-manager /etc/logrotate.d \
     \
-    # runtime configurations patches
+    # Patch runtime configurations
     && sed -i "s#user npm;#user root;#" /etc/nginx/nginx.conf \
     && sed -i "s#root /app/frontend;#root /opt/nginx-proxy-manager/frontend;#" /etc/nginx/conf.d/production.conf \
     && sed -i "s#table.string('id').notNull().primary();#table.string('id', 32).notNull().primary();#" /opt/nginx-proxy-manager/migrations/20190227065017_settings.js \
     \
     && mkdir -p /run/nginx \
     \
-    # clean up system
+    # Clean up system
     && apk del --purge .build-dependencies \
     && yarn cache clean \
     && rm -f -r \
@@ -108,7 +108,7 @@ RUN \
 # Copy root filesystem
 COPY rootfs /
 
-# Build arguments
+# Build Arguments
 ARG BUILD_ARCH
 ARG BUILD_DATE
 ARG BUILD_DESCRIPTION
@@ -117,7 +117,7 @@ ARG BUILD_REF
 ARG BUILD_REPOSITORY
 ARG BUILD_VERSION
 
-# Labels for Home Assistant
+# Home Assistant Labels
 LABEL \
     io.hass.name="${BUILD_NAME}" \
     io.hass.description="${BUILD_DESCRIPTION}" \
@@ -128,7 +128,6 @@ LABEL \
     org.opencontainers.image.title="${BUILD_NAME}" \
     org.opencontainers.image.description="${BUILD_DESCRIPTION}" \
     org.opencontainers.image.vendor="Home Assistant Community Add-ons" \
-    org.opencontainers.image.authors="Franck Nijhof <frenck@addons.community>" \
     org.opencontainers.image.licenses="MIT" \
     org.opencontainers.image.url="https://addons.community" \
     org.opencontainers.image.source="https://github.com/${BUILD_REPOSITORY}" \
