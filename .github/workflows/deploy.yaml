@@ -14,4 +14,4 @@ on:
 
 jobs:
   workflows:
-    uses: MartinKuhl/ha-workflows/.github/workflows/addon-deploy.yaml@main
+    uses: MartinKuhl/ha-workflows/.github/workflows/addon-deploy.yaml@0e05a3b9f0f50a1040d30feed6a68f0c5adc73a9 # main
