@@ -23,7 +23,7 @@ RUN \
     && apk add --no-cache \
     apache2-utils=2.4.66-r0 \
     certbot=5.1.0-r0 \
-    libcap=2.77-r0 \
+    libcap=2.78-r0 \
     logrotate=3.22.0-r0 \
     nginx-mod-stream=1.28.3-r0 \
     nginx=1.28.3-r0 \
