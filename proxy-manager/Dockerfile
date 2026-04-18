@@ -18,7 +18,7 @@ RUN \
     libffi-dev=3.5.2-r0 \
     openssl-dev=3.5.5-r0 \
     patch=2.8-r0 \
-    python3-dev=3.12.12-r0 \
+    python3-dev=3.12.13-r0 \
     \
     && apk add --no-cache \
     apache2-utils=2.4.66-r0 \
@@ -31,7 +31,7 @@ RUN \
     npm=11.11.0-r0 \
     openssl=3.5.5-r0 \
     py3-pip=25.1.1-r1 \
-    python3=3.12.12-r0 \
+    python3=3.12.13-r0 \
     yarn=1.22.22-r1 \
     \
     # Download and extract NPM source
