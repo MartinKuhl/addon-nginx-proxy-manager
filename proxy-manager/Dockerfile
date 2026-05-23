@@ -25,8 +25,8 @@ RUN \
     certbot=5.1.0-r0 \
     libcap=2.78-r0 \
     logrotate=3.22.0-r0 \
-    nginx-mod-stream=1.28.3-r1 \
-    nginx=1.28.3-r1 \
+    nginx-mod-stream=1.28.3-r2 \
+    nginx=1.28.3-r2 \
     nodejs=24.14.1-r0 \
     npm=11.11.0-r0 \
     openssl=3.5.6-r0 \
