@@ -6,7 +6,7 @@ FROM ${BUILD_FROM}
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Define NPM Version
-ARG NGINX_PROXY_MANAGER_VERSION="v2.14.0"
+ARG NGINX_PROXY_MANAGER_VERSION="v2.15.1"
 
 # Install build dependencies and runtime packages
 # docker run --rm alpine:3.23.3 sh -c "apk update -q && apk list %dependency% e.g. libpq"
