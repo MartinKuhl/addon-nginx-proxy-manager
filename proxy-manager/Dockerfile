@@ -47,19 +47,24 @@ RUN curl -J -L -o /tmp/nginxproxymanager.tar.gz \
     && sed -i 's#  && deactivate##g' /app/backend/lib/certbot.js \
     && sed -i 's/cloudflare==4.0.\*/cloudflare/g' /app/backend/certbot/dns-plugins.json
 
-# 3. Frontend bauen
-RUN cd /app/frontend \
-    && yarn install --ignore-engines --network-timeout 100000 \
+# 3. Frontend bauen (Jetzt mit WORKDIR und lokalem Cache Clean)
+WORKDIR /app/frontend
+RUN yarn install --ignore-engines --network-timeout 100000 \
+    && yarn cache clean \
     && yarn locale-compile \
     && yarn build \
     && rm -rf node_modules \
     && mkdir -p /opt/nginx-proxy-manager/frontend \
     && cp -r /app/frontend/dist/. /opt/nginx-proxy-manager/frontend/
 
-# 4. Backend bauen
-RUN cd /app/backend \
-    && yarn install --production \
+# 4. Backend bauen (Jetzt mit WORKDIR und lokalem Cache Clean)
+WORKDIR /app/backend
+RUN yarn install --production \
+    && yarn cache clean \
     && cp -r /app/backend/. /opt/nginx-proxy-manager/
+
+# Zurück zum Root-Verzeichnis für absolute Pfad-Operationen
+WORKDIR /
 
 # 5. Konfigurationen setzen & Cleanup
 RUN rm -f -r /etc/nginx \
