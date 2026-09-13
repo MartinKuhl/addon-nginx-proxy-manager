@@ -16,7 +16,7 @@ RUN \
     build-base=0.5-r4 \
     git=2.54.0-r0 \
     libffi-dev=3.5.2-r1 \
-    openssl-dev=3.5.7-r0 \
+    openssl-dev=3.5.8-r0 \
     patch=2.8-r0 \
     python3-dev=3.14.7-r1 \
     \
@@ -29,7 +29,7 @@ RUN \
     nginx=1.30.4-r1 \
     nodejs=24.18.1-r0 \
     npm=11.12.1-r0 \
-    openssl=3.5.7-r0 \
+    openssl=3.5.8-r0 \
     py3-pip=26.1.2-r0 \
     python3=3.14.7-r1 \
     yarn=1.22.22-r1 \
