@@ -16,7 +16,7 @@ RUN \
     build-base=0.5-r4 \
     git=2.54.0-r0 \
     libffi-dev=3.5.2-r1 \
-    openssl-dev=3.5.7-r0 \
+    openssl-dev=3.5.8-r0 \
     patch=2.8-r0 \
     python3-dev=3.14.7-r1 \
     \
